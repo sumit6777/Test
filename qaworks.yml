@@ -1,0 +1,24 @@
+default:
+    formatters:
+        pretty:
+            output_path: %paths.base%/pretty.txt
+        html:
+            output_path: %paths.base%/reports 			
+    suites:
+      default:
+        contexts:  
+          - FeatureContext:
+              parameters:
+                base_url: 'http://qaworks.com'
+                screenshots_path: %paths.base%/reports/screenshots
+    extensions:
+      Behat\MinkExtension:
+        default_session: 'selenium2'
+        javascript_session:  'selenium2'
+        browser_name: 'chrome'
+        selenium2: ~
+        goutte: ~  
+      emuse\BehatHTMLFormatter\BehatHTMLFormatterExtension:
+        name: html
+        renderer: Twig
+        file_name: index		

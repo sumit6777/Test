@@ -1,0 +1,46 @@
+Feature: Contact Us Page
+  As an end user
+  I want to access contact us page
+  So that I can find out more about QAWorks exciting services
+
+  @regression @sanity @contactus @ut
+  Scenario: Valid Submission of a user query on Contact Us Page                       # features\qaworks.feature:7
+    Given I am on "http://qaworks.com"                                                # FeatureContext::visit()
+    And I wait for element "Contact"                                                  # FeatureContext::iWaitForElement()
+    When I click element "Contact"                                                    # FeatureContext::iClickElement()
+    And I wait for element "ContactSend"                                              # FeatureContext::iWaitForElement()
+    And I fill in field "NameBox" with "j.Bloggs<randstring>"                         # FeatureContext::fillInputField()
+    And I fill in field "EmailBox" with "j.Bloggs@qaworks.com"                        # FeatureContext::fillInputField()
+    And I fill in field "MessageBox" with "please contact me I want to find out more" # FeatureContext::fillInputField()
+    And I click element "SendButton"                                                  # FeatureContext::iClickElement()
+    And I wait for element "ContactSend"                                              # FeatureContext::iWaitForElement()
+    Then I should see field "NameBox"                                                 # FeatureContext::iShouldSeeField()
+
+  @regression @sanity @contactus @negative
+  Scenario Outline: Verify error messages on Contact Page # features\qaworks.feature:21
+    Given I am on "http://qaworks.com"                    # FeatureContext::visit()
+    And I wait for element "Contact"                      # FeatureContext::iWaitForElement()
+    When I click element "Contact"                        # FeatureContext::iClickElement()
+    And I wait for element "ContactSend"                  # FeatureContext::iWaitForElement()
+    And I fill in field "NameBox" with "<Name>"           # FeatureContext::fillInputField()
+    And I fill in field "EmailBox" with "<Email>"         # FeatureContext::fillInputField()
+    And I fill in field "MessageBox" with "<Text>"        # FeatureContext::fillInputField()
+    And I click element "SendButton"                      # FeatureContext::iClickElement()
+    And I wait for element "ContactSend"                  # FeatureContext::iWaitForElement()
+    Then I should see message "<Message>"                 # FeatureContext::iShouldSeeField()
+
+    Examples:
+      | Name      | Email            | Text           | Message                      |
+      |           | Jo.Bloggs@jo.com | This is a test | Your name is required        |
+      | Jo Bloggs |                  | This is a test | An Email address is required |
+      | Jo Bloggs | Jo.Bloggs        | This is a test | Invalid Email Address        |
+        Element is not visible (Exception)
+      | Jo Bloggs | Jo.Bloggs@jo.com |                | Please type your message     |
+
+--- Failed scenarios:
+
+    features\qaworks.feature:37
+
+5 scenarios (4 passed, 1 failed)
+50 steps (48 passed, 1 failed, 1 skipped)
+0m53.77s (9.97Mb)
